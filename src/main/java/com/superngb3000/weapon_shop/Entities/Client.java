@@ -28,8 +28,8 @@ public class Client {
     @Column(name = "license")
     private String license;
 
-    @NotNull
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "client_id")
+//    @NotNull
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "client")
+//    @JoinColumn(name = "client_id")
     private List<Order> orders = new ArrayList<>();
 }

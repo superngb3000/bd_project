@@ -27,6 +27,16 @@ public class Order {
     @Column(name = "date")
     private Date date;
 
+    @NotNull
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "manager_id")
+    private Manager manager;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "client_id")
+    private Client client;
+
     @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(name="orders_weapons",
             joinColumns = {@JoinColumn(name="order_id", referencedColumnName="id")},

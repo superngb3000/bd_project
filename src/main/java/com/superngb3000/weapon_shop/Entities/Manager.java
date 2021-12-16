@@ -32,8 +32,8 @@ public class Manager {
     @Column(name = "employment_contract")
     private String employmentContract;
 
-    @NotNull
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "manager_id")
+//    @NotNull
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "manager")
+//    @JoinColumn(name = "manager_id")
     private List<Order> orders = new ArrayList<>();
 }

@@ -19,15 +19,15 @@ public class Person {
 
     @NotNull
     @Column(name = "first_name")
-    private String first_name;
+    private String firstName;
 
     @NotNull
     @Column(name = "second_name")
-    private String second_name;
+    private String secondName;
 
     @NotNull
     @Column(name = "middle_name")
-    private String middle_name;
+    private String middleName;
 
     @NotNull
     @Column(name = "email")
