@@ -51,7 +51,7 @@ create table users
     id int auto_increment,
     person_id int not null,
     username varchar(20) not null,
-    password varchar(20) not null,
+    password varchar(100) not null,
     PRIMARY KEY (id),
     FOREIGN KEY (person_id) REFERENCES persons (id)
 );
