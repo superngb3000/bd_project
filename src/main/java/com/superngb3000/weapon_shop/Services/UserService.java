@@ -62,7 +62,7 @@ public class UserService implements UserDetailsService {
         if (roleManager.equals(RoleEnum.ROLE_MANAGER.name()) && managerRepository.findByPersonId(personId) != null)
             roles.add(roleRepository.findById(RoleEnum.ROLE_MANAGER.getId()).get());
 
-        if (roleManager.equals(RoleEnum.ROLE_ADMIN.name()))
+        if (roleAdmin.equals(RoleEnum.ROLE_ADMIN.name()))
             roles.add(roleRepository.findById(RoleEnum.ROLE_ADMIN.getId()).get());
 
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));

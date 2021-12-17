@@ -41,6 +41,6 @@ public class PersonController {
                              @RequestParam String email,
                              @RequestParam String phoneNumber){
         personService.createPerson(new Person(firstName, secondName, middleName, email, phoneNumber));
-        return "persons";
+        return "redirect:/persons";
     }
 }

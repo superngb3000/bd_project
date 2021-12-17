@@ -29,6 +29,6 @@ public class ClientController {
                                @RequestParam Integer personId,
                                @RequestParam String license){
         clientService.createClient(personId, new Client(license));
-        return "clients";
+        return "redirect:/clients";
     }
 }

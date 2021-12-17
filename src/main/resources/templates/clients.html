@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <th:block th:include="general.html :: headers"></th:block>
+    <title>Clients</title>
+</head>
+<body>
+<nav  class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/admin">Назад</a><br>
+    <a class="navbar-brand" href="/weapons">Товары</a><br>
+    <a class="navbar-brand" href="/persons">Люди</a><br>
+    <a class="navbar-brand" href="/clients">Клиенты</a><br>
+    <a class="navbar-brand" href="/managers">Сотрудники</a><br>
+    <a class="navbar-brand" href="/users">Пользователи</a><br>
+    <a class="navbar-brand" href="/orders">Заказы</a><br>
+    <a class="navbar-brand" href="/logout">Выйти</a>
+    <a class="navbar-brand" href="/actuator">Actuator</a>
+</nav>
+<h3>Клиенты</h3>
+<div>
+    <form method="post" action="/client/">
+        <input type="text" name="personId" placeholder="ID личного дела">
+        <input type="text" name="license" placeholder="Лицензия">
+        <input type="hidden" name="action" th:value="addItem"/>
+        <input type="submit" class="btn btn-primary" value="Создать">
+    </form>
+</div>
+<table class="table table-bordered">
+    <thead>
+    <th scope="col">ID</th>
+    <th scope="col">Лицензия</th>
+    <th scope="col">personID</th>
+    </thead>
+    <th:block th:each="client: ${clients}">
+        <tr>
+            <td th:text="${client.getId()}"></td>
+            <td th:text="${client.getLicense()}"></td>
+            <td th:text="${client.getPerson().getId()}"></td>
+        </tr>
+    </th:block>
+</table>
+</body>
+</html>

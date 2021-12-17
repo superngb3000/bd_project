@@ -32,6 +32,6 @@ public class UserController {
                                @RequestParam String roleManager,
                                @RequestParam String roleAdmin){
         userService.createUser(personId, new User(username, password), roleClient, roleManager, roleAdmin);
-        return "users";
+        return "redirect:/users";
     }
 }

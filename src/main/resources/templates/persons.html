@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <th:block th:include="general.html :: headers"></th:block>
+    <title>Persons</title>
+</head>
+<body>
+<nav  class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/admin">Назад</a><br>
+    <a class="navbar-brand" href="/weapons">Товары</a><br>
+    <a class="navbar-brand" href="/persons">Люди</a><br>
+    <a class="navbar-brand" href="/clients">Клиенты</a><br>
+    <a class="navbar-brand" href="/managers">Сотрудники</a><br>
+    <a class="navbar-brand" href="/users">Пользователи</a><br>
+    <a class="navbar-brand" href="/orders">Заказы</a><br>
+    <a class="navbar-brand" href="/logout">Выйти</a>
+    <a class="navbar-brand" href="/actuator">Actuator</a>
+</nav>
+<h3>Личные дела</h3>
+<div>
+    <form method="post" action="/person/">
+        <input type="text" name="secondName" placeholder="Фамиллия">
+        <input type="text" name="firstName" placeholder="Имя">
+        <input type="text" name="middleName" placeholder="Отчество">
+        <input type="text" name="email" placeholder="Почта">
+        <input type="text" name="phoneNumber" placeholder="Телефон">
+        <input type="hidden" name="action" th:value="addItem"/>
+        <input type="submit" class="btn btn-primary" value="Создать">
+    </form>
+</div>
+<table class="table table-bordered">
+    <thead>
+    <th scope="col">ID</th>
+    <th scope="col">Фамилия</th>
+    <th scope="col">Имя</th>
+    <th scope="col">Отчество</th>
+    <th scope="col">Почта</th>
+    <th scope="col">Телефон</th>
+    <th scope="col">clientID</th>
+    <th scope="col">managerID</th>
+    <th scope="col">userID</th>
+    </thead>
+    <th:block th:each="person: ${persons}">
+        <tr>
+            <td th:text="${person.getId()}"></td>
+            <td th:text="${person.getSecondName()}"></td>
+            <td th:text="${person.getFirstName()}"></td>
+            <td th:text="${person.getMiddleName()}"></td>
+            <td th:text="${person.getEmail()}"></td>
+            <td th:text="${person.getPhoneNumber()}"></td>
+            <td>
+                <th:block th:each="client: ${clients}">
+                    <a th:if="${client.getPerson().getId()} == ${person.getId()}" th:text="${client.getId()}"></a>
+                </th:block>
+            </td>
+            <td>
+                <th:block th:each="manager: ${managers}">
+                    <a th:if="${manager.getPerson().getId()} == ${person.getId()}" th:text="${manager.getId()}"></a>
+                </th:block>
+            </td>
+            <td>
+                <th:block th:each="user: ${users}">
+                    <a th:if="${user.getPerson().getId()} == ${person.getId()}" th:text="${user.getId()}"></a>
+                </th:block>
+            </td>
+        </tr>
+    </th:block>
+</table>
+</body>
+</html>

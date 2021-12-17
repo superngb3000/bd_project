@@ -27,8 +27,10 @@ public class WeaponController {
                                @RequestParam String name,
                                @RequestParam String producer,
                                @RequestParam String technicalSpecifications,
-                               @RequestParam Float price){
+                               @RequestParam Float price,
+                               @RequestParam(defaultValue = "") String action){
         weaponService.createWeapon(new Weapon(cadastralNumber, name, producer, technicalSpecifications, price));
-        return "weapons";
+        model.addAttribute("weapons", weaponService.getAllWeapons());
+        return "redirect:/weapons";
     }
 }

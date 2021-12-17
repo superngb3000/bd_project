@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <th:block th:include="general.html :: headers"></th:block>
+    <title>Orders</title>
+</head>
+<body>
+<nav  class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/admin">Назад</a><br>
+    <a class="navbar-brand" href="/weapons">Товары</a><br>
+    <a class="navbar-brand" href="/persons">Люди</a><br>
+    <a class="navbar-brand" href="/clients">Клиенты</a><br>
+    <a class="navbar-brand" href="/managers">Сотрудники</a><br>
+    <a class="navbar-brand" href="/users">Пользователи</a><br>
+    <a class="navbar-brand" href="/orders">Заказы</a><br>
+    <a class="navbar-brand" href="/logout">Выйти</a>
+    <a class="navbar-brand" href="/actuator">Actuator</a>
+</nav>
+<h3>Заказы</h3>
+<table class="table table-bordered">
+    <thead>
+    <th scope="col">ID</th>
+    <th scope="col">Менеджер</th>
+    <th scope="col">Клиент</th>
+    <th scope="col">Стоимость</th>
+    <th scope="col">Товары</th>
+    </thead>
+    <th:block th:each="order: ${orders}">
+        <tr>
+            <td th:text="${order.getId()}"></td>
+            <td th:text="${order.getManager().getId()}"></td>
+            <td th:text="${order.getClient().getId()}"></td>
+            <td th:text="${order.getPrice()}"></td>
+            <td>
+                <th:block th:each="item: ${order.getWeapons()}"><a th:text="${item.getId()} + ';'"></a><br></th:block>
+            </td>
+        </tr>
+    </th:block>
+</table>
+</body>
+</html>
