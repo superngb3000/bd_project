@@ -1,6 +1,7 @@
 package com.superngb3000.weapon_shop.Services;
 
 import com.superngb3000.weapon_shop.Entities.Client;
+import com.superngb3000.weapon_shop.Entities.Person;
 import com.superngb3000.weapon_shop.Repositories.ClientRepository;
 import com.superngb3000.weapon_shop.Repositories.PersonRepository;
 import com.superngb3000.weapon_shop.Requests.ClientUpdateRequest;
@@ -28,10 +29,13 @@ public class ClientService {
         return clientRepository.findAll();
     }
 
-    public boolean createClient(Client client){
-        if (!personRepository.findById(client.getPerson().getId()).isPresent())
+    public boolean createClient(Integer personId, Client client){
+        Optional<Person> optionalPerson = personRepository.findById(personId);
+
+        if (!optionalPerson.isPresent() || clientRepository.findByPersonId(personId) != null)
             return false;
 
+        client.setPerson(optionalPerson.get());
         clientRepository.save(client);
         return true;
     }

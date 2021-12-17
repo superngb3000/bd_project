@@ -32,4 +32,8 @@ public class Client {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "client")
 //    @JoinColumn(name = "client_id")
     private List<Order> orders = new ArrayList<>();
+
+    public Client(String license) {
+        this.license = license;
+    }
 }

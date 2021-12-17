@@ -36,4 +36,9 @@ public class Manager {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "manager")
 //    @JoinColumn(name = "manager_id")
     private List<Order> orders = new ArrayList<>();
+
+    public Manager(String license, String employmentContract) {
+        this.license = license;
+        this.employmentContract = employmentContract;
+    }
 }

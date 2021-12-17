@@ -36,4 +36,12 @@ public class Person {
     @NotNull
     @Column(name = "phone_number")
     private String phoneNumber;
+
+    public Person(String firstName, String secondName, String middleName, String email, String phoneNumber) {
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.middleName = middleName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+    }
 }

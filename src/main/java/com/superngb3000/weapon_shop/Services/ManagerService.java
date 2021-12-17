@@ -1,6 +1,7 @@
 package com.superngb3000.weapon_shop.Services;
 
 import com.superngb3000.weapon_shop.Entities.Manager;
+import com.superngb3000.weapon_shop.Entities.Person;
 import com.superngb3000.weapon_shop.Repositories.ManagerRepository;
 import com.superngb3000.weapon_shop.Repositories.PersonRepository;
 import com.superngb3000.weapon_shop.Requests.ManagerUpdateRequest;
@@ -28,10 +29,13 @@ public class ManagerService {
         return managerRepository.findAll();
     }
 
-    public boolean createManager(Manager manager){
-        if (!personRepository.findById(manager.getPerson().getId()).isPresent())
+    public boolean createManager(Integer personId, Manager manager){
+        Optional<Person> optionalPerson = personRepository.findById(personId);
+
+        if (!optionalPerson.isPresent() || managerRepository.findByPersonId(personId) != null)
             return false;
 
+        manager.setPerson(optionalPerson.get());
         managerRepository.save(manager);
         return true;
     }

@@ -41,4 +41,12 @@ public class Weapon {
     @Transient
     @ManyToMany(mappedBy = "weapons")
     private List<Order> orders;
+
+    public Weapon(String cadastralNumber, String name, String producer, String technicalSpecifications, Float price) {
+        this.cadastralNumber = cadastralNumber;
+        this.name = name;
+        this.producer = producer;
+        this.technicalSpecifications = technicalSpecifications;
+        this.price = price;
+    }
 }

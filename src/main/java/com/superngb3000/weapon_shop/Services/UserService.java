@@ -1,28 +1,43 @@
 package com.superngb3000.weapon_shop.Services;
 
+import com.superngb3000.weapon_shop.Entities.Person;
 import com.superngb3000.weapon_shop.Entities.Role;
 import com.superngb3000.weapon_shop.Entities.User;
 import com.superngb3000.weapon_shop.Enums.RoleEnum;
-import com.superngb3000.weapon_shop.Repositories.PersonRepository;
-import com.superngb3000.weapon_shop.Repositories.RoleRepository;
-import com.superngb3000.weapon_shop.Repositories.UserRepository;
+import com.superngb3000.weapon_shop.Repositories.*;
 import com.superngb3000.weapon_shop.Requests.UserUpdateRequest;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
+    @PersistenceContext
+    private EntityManager em;
+
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PersonRepository personRepository;
+    private final ClientRepository clientRepository;
+    private final ManagerRepository managerRepository;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, PersonRepository personRepository) {
+    public UserService(BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository userRepository, RoleRepository roleRepository, PersonRepository personRepository, ClientRepository clientRepository, ManagerRepository managerRepository) {
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.personRepository = personRepository;
+        this.clientRepository = clientRepository;
+        this.managerRepository = managerRepository;
     }
 
     public User getUser(Integer id){
@@ -30,13 +45,29 @@ public class UserService {
     }
 
     public List<User> getAllUsers(){
+        List<User> users = userRepository.findAll();
         return userRepository.findAll();
     }
 
-    public boolean createUser(User user){
-        if (!personRepository.findById(user.getPerson().getId()).isPresent())
+    public boolean createUser(Integer personId, User user, String roleClient, String roleManager, String roleAdmin){
+        Optional<Person> optionalPerson = personRepository.findById(personId);
+
+        if (!optionalPerson.isPresent() || userRepository.findByPersonId(personId) != null)
             return false;
 
+        List<Role> roles = new ArrayList<>();
+        if (roleClient.equals(RoleEnum.ROLE_CLIENT.name()) && clientRepository.findByPersonId(personId) != null)
+            roles.add(roleRepository.findById(RoleEnum.ROLE_CLIENT.getId()).get());
+
+        if (roleManager.equals(RoleEnum.ROLE_MANAGER.name()) && managerRepository.findByPersonId(personId) != null)
+            roles.add(roleRepository.findById(RoleEnum.ROLE_MANAGER.getId()).get());
+
+        if (roleManager.equals(RoleEnum.ROLE_ADMIN.name()))
+            roles.add(roleRepository.findById(RoleEnum.ROLE_ADMIN.getId()).get());
+
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setRoles(roles);
+        user.setPerson(optionalPerson.get());
         userRepository.save(user);
         return true;
     }
@@ -91,6 +122,8 @@ public class UserService {
             }
             user.setRoles(roles);
 
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+
             userRepository.save(user);
         }
 
@@ -102,5 +135,14 @@ public class UserService {
         if (user.isPresent())
             userRepository.deleteById(id);
         return user.orElse(null);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username);
+        if(user == null){
+            throw new UsernameNotFoundException("Пользователь не найден");
+        }
+        return user;
     }
 }
