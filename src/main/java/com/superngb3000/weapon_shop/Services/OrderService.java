@@ -8,10 +8,12 @@ import com.superngb3000.weapon_shop.Repositories.OrderRepository;
 import com.superngb3000.weapon_shop.Repositories.WeaponRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class OrderService {
 
     private final OrderRepository orderRepository;

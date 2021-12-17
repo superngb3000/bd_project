@@ -7,10 +7,12 @@ import com.superngb3000.weapon_shop.Repositories.PersonRepository;
 import com.superngb3000.weapon_shop.Requests.ClientUpdateRequest;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class ClientService {
 
     private final ClientRepository clientRepository;

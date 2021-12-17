@@ -17,7 +17,8 @@ public class WeaponController {
 
     @GetMapping("/weapons")
     public String getWeapons(Model model){
-        model.addAttribute("weapons", weaponService.getAllWeapons());
+//        model.addAttribute("weapons", weaponService.getAllWeapons());
+        model.addAttribute("weapons", weaponService.getWeaponsSQL());
         return "weapons";
     }
 
@@ -29,8 +30,15 @@ public class WeaponController {
                                @RequestParam String technicalSpecifications,
                                @RequestParam Float price,
                                @RequestParam(defaultValue = "") String action){
-        weaponService.createWeapon(new Weapon(cadastralNumber, name, producer, technicalSpecifications, price));
+//        weaponService.createWeapon(new Weapon(cadastralNumber, name, producer, technicalSpecifications, price));
+        weaponService.insertWeaponSql(new Weapon(cadastralNumber, name, producer, technicalSpecifications, price));
         model.addAttribute("weapons", weaponService.getAllWeapons());
+        return "redirect:/weapons";
+    }
+
+    @PostMapping("/weapon/{id}")
+    public String deleteWeapon(@PathVariable Integer id){
+        weaponService.deleteWeaponSQL(id);
         return "redirect:/weapons";
     }
 }

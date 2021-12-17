@@ -45,6 +45,11 @@
             <td th:text="${item.getProducer()}"></td>
             <td th:text="${item.getTechnicalSpecifications()}"></td>
             <td th:text="${item.getPrice()}"></td>
+            <td>
+                <form method="post" th:action="@{/weapon/{id}(id=${item.getId()})}">
+                    <input type="submit" class="btn btn-danger" value="Удалить">
+                </form>
+            </td>
         </tr>
     </th:block>
 </table>

@@ -146,7 +146,8 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
-    public List<User> getUsersSQL(){
-        return em.createNativeQuery("select * from users;").getResultList();
+    public List getUsersSQL(){
+        return em.createNativeQuery("select * from users;",User.class).getResultList();
     }
+
 }
